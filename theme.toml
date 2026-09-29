@@ -1,0 +1,18 @@
+name = "ZedPaper"
+license = "MIT"
+licenselink = "https://github.com/zdleeeeee/zdleeeeee.github.io/blob/main/themes/ZedPaper/LICENSE"
+description = "A responsive Hugo blog theme with floating navigation and reading progress"
+homepage = "https://github.com/zdleeeeee/zdleeeeee.github.io"
+tags = ["blog", "responsive", "minimal", "search", "dark mode", "table of contents"]
+features = ["responsive", "search", "cover images", "floating table of contents", "reading progress", "dark mode"]
+min_version = "0.146.0"
+
+[author]
+  name = "Zed Lee"
+  homepage = "https://github.com/zdleeeeee"
+
+[original]
+  name = "PaperMod"
+  author = "Aditya Telange"
+  homepage = "https://github.com/adityatelange/hugo-PaperMod"
+  repo = "https://github.com/adityatelange/hugo-PaperMod"
