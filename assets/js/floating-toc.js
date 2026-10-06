@@ -57,7 +57,9 @@
             const sectionBottom = nextSection
                 ? nextSection.heading.getBoundingClientRect().top + scrollY
                 : articleBottom;
-            const isActive = sectionTop < viewportBottom && sectionBottom > viewportTop;
+            // Anchor scrolling can round a fractional heading position to a whole
+            // CSS pixel. Do not keep the previous section active for that sliver.
+            const isActive = sectionTop < viewportBottom && sectionBottom > viewportTop + 1;
             const sectionLength = sectionBottom - sectionTop;
             const progress = sectionLength > 0
                 ? Math.min(1, Math.max(0, (viewportBottom - sectionTop) / sectionLength))
