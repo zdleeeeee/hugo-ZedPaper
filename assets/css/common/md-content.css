@@ -46,7 +46,13 @@
 .md-content p:not(:last-child),
 .md-content figure:not(:last-child),
 .md-content ul:not(:last-child) {
+    margin-top: 0;
     margin-bottom: var(--content-gap);
+}
+
+.md-content li:not(:last-child) {
+    margin-top: 0;
+    margin-bottom: var(--radius);
 }
 
 .md-content ol,
@@ -56,10 +62,6 @@
 
 .md-content :is(ul, ol) > li::marker {
     color: var(--secondary);
-}
-
-.md-content li {
-    margin-top: 0.3rem;
 }
 
 .md-content li p {
