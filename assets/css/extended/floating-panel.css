@@ -7,12 +7,13 @@
     align-items: center;
     justify-content: center;
     position: fixed;
-    bottom: 80px;
+    bottom: 30px;
     right: 15px;
     z-index: 99;
-    width: 40px;
-    height: 40px;
-    padding: 5px;
+    width: 48px;
+    height: 48px;
+    padding: 0px;
+    font-size: 14px;
     border-radius: 64px;
     background: var(--code-bg);
     color: var(--secondary);
@@ -26,6 +27,7 @@
 
 .floating-panel-trigger:hover {
     color: var(--primary);
+    background: var(--tertiary);
 }
 
 .floating-panel-sidebar {
@@ -33,8 +35,22 @@
 }
 
 .floating-panel-title {
-    padding: 5px 10px;
+    padding: var(--radius) var(--content-gap);
     font-weight: 500;
+}
+
+.floating-panel-title a,
+.floating-panel-dialog-header h2 a {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.floating-panel-title a:hover,
+.floating-panel-dialog-header h2 a:hover {
+    text-decoration: none;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
 }
 
 .floating-panel-dialog {
@@ -188,5 +204,11 @@
         max-height: calc(100dvh - var(--header-height) - 64px);
         overflow-y: auto;
         overscroll-behavior: contain;
+    }
+}
+
+@media (max-width: 1000px) {
+    .floating-panel-trigger {
+        bottom: 20px;
     }
 }

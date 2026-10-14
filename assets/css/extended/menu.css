@@ -39,26 +39,34 @@ clicking it opens a dropdown panel below the header with the full menu.
         justify-content: center;
         align-self: center;
         margin-left: auto;
-        margin-right: 10px;
-        padding: 10px;
+        padding: 5px;
+        top: 0;
+        bottom: 0;
         border: none;
         background: none;
         color: var(--primary);
         cursor: pointer;
+
+        border-radius: 10px;
+        background: #ffffff00;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition: all 0.2s ease;
     }
 
     /* Collapse the inline menu; show it as a full-width dropdown panel. */
     #menu.menu {
         transform: translateY(-200%);
+        margin-top: var(--gap);
         position: absolute;
         top: 100%;
-        left: 0;
-        right: 0;
+        left: var(--content-gap);
+        right: var(--content-gap);
         flex-direction: column;
         align-items: stretch;
-        row-gap: 0.25rem;
+        row-gap: var(--radius);
         padding: var(--gap);
-        background: #ffffff00;
+        background: var(--theme-tp);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--border);
@@ -85,9 +93,5 @@ clicking it opens a dropdown panel below the header with the full menu.
         display: block;
         padding: 0.55rem 0;
         font-size: 1.05rem;
-    }
-
-    #menu.menu:active {
-        transform: scale(0.9);
     }
 }

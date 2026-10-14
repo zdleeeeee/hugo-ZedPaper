@@ -5,6 +5,10 @@
     const article = document.querySelector('.post-content');
     if (!toc || !tocInner || !article) return;
 
+    const trigger = panel.querySelector('.floating-panel-trigger');
+    const readingProgress = trigger?.querySelector('.reading-progress');
+    const triggerLabel = trigger?.getAttribute('aria-label');
+
     const tocLinks = Array.from(toc.querySelectorAll('a[href^="#"]'));
     if (!tocLinks.length) return;
     const segmentFragment = document.createDocumentFragment();
@@ -43,6 +47,12 @@
 
     function updateTocState() {
         updatePending = false;
+        if (readingProgress) {
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const percent = maxScroll > 0 ? Math.round(window.scrollY / maxScroll * 100) : 100;
+            readingProgress.textContent = `${Math.min(100, Math.max(0, percent))}%`;
+            trigger.setAttribute('aria-label', `${triggerLabel} (${readingProgress.textContent})`);
+        }
         if (!sections.length) return;
 
         const scrollY = window.scrollY;

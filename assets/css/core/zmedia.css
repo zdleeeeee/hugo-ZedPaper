@@ -1,8 +1,8 @@
 @media screen and (max-width: 768px) {
     /* theme-vars */
-    :root {
+    /* :root {
         --gap: 14px;
-    }
+    } */
 
     /* profile-mode */
     .profile img {
@@ -29,13 +29,6 @@
     }
 }
 
-/* footer */
-@media screen and (max-width: 900px) {
-    .list .top-link {
-        transform: translateY(-5rem);
-    }
-}
-
 @media screen and (max-width: 340px) {
     .share-buttons {
         justify-content: unset;
@@ -47,7 +40,6 @@
     .terms-tags a:active,
     .button:active,
     .post-entry:active,
-    .top-link,
     .searchResults .focus,
     .searchResults li:active {
         transform: none;
