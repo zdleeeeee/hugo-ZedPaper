@@ -97,6 +97,9 @@ details .title {
 
 details {
     interpolate-size: allow-keywords;
+    padding: var(--radius)  var(--content-gap);
+    border-radius: var(--radius);
+    background: var(--code-bg);
 }
 
 details::details-content {
@@ -110,6 +113,7 @@ details::details-content {
 
 details[open]::details-content {
     height: auto;
+    margin-top: var(--content-gap);
     opacity: 1;
 }
 

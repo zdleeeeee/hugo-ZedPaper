@@ -2,7 +2,15 @@
 {{ else }}
 {{ warnf "missing value for param 'summary': %s" .Position }}
 {{ end }}
-<p><details {{ if (eq (.Get "openByDefault") true) }} open=true {{ end }}>
+<details {{ if (eq (.Get "openByDefault") true) }} open=true {{ end }}>
   <summary markdown="span">{{ .Get "summary" | markdownify }}</summary>
-  {{ .Inner | markdownify }}
-</details></p>
+  {{ range $index, $part := split .Inner "<!-- ZEDPAPER_MESSAGE_START -->" }}
+    {{ if eq $index 0 }}
+      {{ $part | markdownify }}
+    {{ else }}
+      {{ $sections := split $part "<!-- ZEDPAPER_MESSAGE_END -->" }}
+      {{ index $sections 0 | safeHTML }}
+      {{ range after 1 $sections }}{{ . | markdownify }}{{ end }}
+    {{ end }}
+  {{ end }}
+</details>

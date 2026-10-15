@@ -32,9 +32,18 @@
     color: var(--secondary);
 }
 
-.md-content a:not(.anchor) {
-    text-underline-offset: 0.3rem;
+.md-content a:not(.anchor, .footnote-ref, .footnote-backref) {
+    display: inline-block;
     text-decoration: underline;
+    text-decoration-color: var(--tertiary);
+    color: var(--content);
+    transition: all 0.2s ease;
+}
+
+.md-content a:not(.anchor, .footnote-ref, .footnote-backref):hover {
+    color: var(--primary);
+    text-decoration-color: var(--secondary);
+    transition: all 0.2s ease;
 }
 
 .md-content del {
@@ -161,6 +170,7 @@
 
 .md-content pre code {
     display: grid;
+    white-space: pre-wrap;
     margin: auto 0;
     padding: 10px;
     color: rgb(213, 213, 214);
@@ -228,7 +238,7 @@
 }
 
 .anchor:hover {
-    color: var(--content) !important;
+    color: var(--secondary) !important;
 }
 
 .md-content img.in-text {
@@ -236,18 +246,33 @@
     margin: auto;
 }
 
-.md-content .footnote-ref {
-    background: var(--code-bg);
+.md-content .footnote-ref,
+.md-content .footnote-backref {
     color: var(--secondary);
+    align-items: center;
+    text-align: center;
+    background: var(--code-bg);
     font-size: 10px;
-    padding: 2px 6px;
+    height: calc(var(--radius) * 2);
+    padding: 2px var(--radius);
     border-radius: var(--radius);
     text-decoration: none !important;
     transition: all 0.2s ease;
 }
 
-.md-content .footnote-ref:hover {
-    color: var(--content);
+.md-content sup[id^="fnref:"] {
+    scroll-margin-top: var(--gap);
+}
+
+@media (max-width: 1000px) {
+    .md-content sup[id^="fnref:"] {
+        scroll-margin-top: var(--header-height);
+    }
+}
+
+.md-content .footnote-ref:hover,
+.md-content .footnote-backref:hover {
+    color: var(--content) !important ;
     background: var(--tertiary);
     transition: all 0.2s ease;
 }

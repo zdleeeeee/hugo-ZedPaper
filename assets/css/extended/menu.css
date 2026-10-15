@@ -35,6 +35,7 @@ clicking it opens a dropdown panel below the header with the full menu.
 
     #menu-trigger {
         display: flex;
+        pointer-events: all;
         align-items: center;
         justify-content: center;
         align-self: center;

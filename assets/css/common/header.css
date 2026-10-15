@@ -5,7 +5,8 @@
     right: 0px;
     background: none;
     z-index: 1;
-    padding: var(--radius) var(--gap) ;
+    pointer-events:none;
+    padding: var(--radius) var(--content-gap);
 }
 
 .header-nav {
@@ -25,6 +26,7 @@
 
 .logo,
 .menu {
+    pointer-events: all;
     line-height: 1;
     display: flex;
     padding: 5px 10px;
@@ -71,7 +73,7 @@
 }
 
 .theme-toggle {
-    padding: 0 0.4rem;
+    padding: 0 0 0 2px;
 }
 
 [data-theme="dark"] .moon {

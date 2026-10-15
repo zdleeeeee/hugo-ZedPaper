@@ -1,0 +1,21 @@
+{{- $styles := slice -}}
+{{- with .Get "nameColor" -}}
+  {{- $styles = $styles | append (printf "--chat-name-color: %s" .) -}}
+{{- end -}}
+{{- with .Get "backgroundColor" -}}
+  {{- $styles = $styles | append (printf "--chat-background-color: %s" .) -}}
+{{- end -}}
+{{- with .Get "textColor" -}}
+  {{- $styles = $styles | append (printf "--chat-text-color: %s" .) -}}
+{{- end -}}
+{{ printf "<!-- ZEDPAPER_MESSAGE_START -->" | safeHTML }}
+<div class="chat-message{{ if eq (.Get "align") "right" }} is-right{{ end }}"{{ with $styles }} style="{{ delimit . "; " | safeCSS }}"{{ end }}>
+  {{- with .Get "avatar" }}
+  <div class="chat-message-avatar"><img src="{{ . }}" alt="{{ $.Get "name" | default "" }}" width="40" height="40" loading="lazy"></div>
+  {{- end }}
+  <div class="chat-message-content">
+    {{- with .Get "name" }}<div class="chat-message-name">{{ . }}</div>{{ end }}
+    <div class="chat-message-body">{{ $.Inner | markdownify }}</div>
+  </div>
+</div>
+{{ printf "<!-- ZEDPAPER_MESSAGE_END -->" | safeHTML }}
