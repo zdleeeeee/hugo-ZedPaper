@@ -1,0 +1,12 @@
+.md-content .quote-block .quote-body > :last-child,
+.md-content .quote-block .quote-source > :last-child {
+    margin-bottom: 0;
+}
+
+.md-content .quote-block .quote-source {
+    margin-block-start: var(--content-gap);
+    color: var(--secondary);
+    font-size: 16px;
+    text-align: end;
+    overflow-wrap: anywhere;
+}

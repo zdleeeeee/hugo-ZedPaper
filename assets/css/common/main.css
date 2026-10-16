@@ -59,10 +59,12 @@ pre {
 .copy-code {
     display: block;
     position: absolute;
-    top: 4px;
-    right: 8px;
-    color: var(--secondary);
-    background: none;
+    align-items: center;
+    justify-content: center;
+    top: var(--radius);
+    right: var(--radius);
+    color: #d6d6d6;
+    background: var(--code-block-bg);
     border-radius: var(--radius);
     padding: 0 5px;
     font-size: 14px;
@@ -73,14 +75,12 @@ pre {
 
 div.highlight:hover .copy-code,
 pre:hover .copy-code {
-    opacity: 0.5;
+    opacity: 0.9;
 }
 
 .copy-code:focus-visible,
 .copy-code:hover {
-    color: var(--primary);
-    background: var(--code-bg);
-    opacity: 0.9 !important ;
+    color: #ffffff;
 }
 
 .copy-code:active {

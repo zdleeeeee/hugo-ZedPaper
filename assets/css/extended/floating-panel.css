@@ -7,11 +7,11 @@
     align-items: center;
     justify-content: center;
     position: fixed;
-    bottom: 30px;
-    right: 15px;
+    bottom: var(--gap);
+    right: var(--content-gap);
     z-index: 99;
-    width: 48px;
-    height: 48px;
+    width: calc(var(--gap) * 2);
+    height: calc(var(--gap) * 2);
     padding: 0px;
     font-size: 14px;
     border-radius: 64px;

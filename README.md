@@ -1,6 +1,6 @@
 # ZedPaper
 
-ZedPaper is a responsive Hugo blog theme substantially adapted from [PaperMod](https://github.com/adityatelange/hugo-PaperMod). It is available under the MIT License.
+ZedPaper is a Hugo blog theme substantially adapted from [PaperMod](https://github.com/adityatelange/hugo-PaperMod). It is available under the MIT License.
 
 > [!WARNING]
 > ZedPaper is under active development. The theme's structure, configuration

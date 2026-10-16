@@ -1,0 +1,6 @@
+<blockquote class="quote-block">
+  <div class="quote-body">{{ .Inner | markdownify }}</div>
+  {{- with .Get "source" }}
+  <footer class="quote-source">{{ . | markdownify }}</footer>
+  {{- end }}
+</blockquote>

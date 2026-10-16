@@ -2,8 +2,8 @@
 {{- with .Get "nameColor" -}}
   {{- $styles = $styles | append (printf "--chat-name-color: %s" .) -}}
 {{- end -}}
-{{- with .Get "backgroundColor" -}}
-  {{- $styles = $styles | append (printf "--chat-background-color: %s" .) -}}
+{{- with .Get "background" -}}
+  {{- $styles = $styles | append (printf "--chat-background: %s" .) -}}
 {{- end -}}
 {{- with .Get "textColor" -}}
   {{- $styles = $styles | append (printf "--chat-text-color: %s" .) -}}

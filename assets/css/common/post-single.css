@@ -13,14 +13,10 @@
     color: var(--secondary);
 }
 
-.post-meta {
-    margin-top: 5px;
-}
-
 .post-meta,
 .breadcrumbs {
     color: var(--secondary);
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .breadcrumbs {
