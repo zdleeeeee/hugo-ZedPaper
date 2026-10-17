@@ -18,6 +18,10 @@
     {{- end }}
 {{- end }}
 
+{{- with .GetTerms (.Language.Params.Taxonomies.tag | default "tags") -}}
+    {{- $scratch.Add "meta" (slice (partial "post_tags.html" .)) }}
+{{- end }}
+
 {{/* Combine all meta information into a single string with separators and render it as HTML.*/}}
 
 {{- with ($scratch.Get "meta") }}

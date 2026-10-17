@@ -1,7 +1,7 @@
-<div class="category-nav">
+<div class="tag-nav">
     {{- range $name, $taxonomy := site.Taxonomies.tags }}
     {{- with site.GetPage (printf "/tags/%s" $name) }}
-    <a href="{{ .RelPermalink }}" class="category-btn">
+    <a href="{{ .RelPermalink }}" class="post-tag">
         {{ .LinkTitle }} <sup>{{ $taxonomy.Count }}</sup>
     </a>
     {{- end }}

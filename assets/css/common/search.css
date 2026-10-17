@@ -45,3 +45,27 @@
     border-color: var(--tertiary);
     box-shadow: var(--shadow);
 }
+
+.search-result-text {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.searchResults li > svg {
+    flex-shrink: 0;
+    margin-inline-start: 12px;
+}
+
+.search-result-preview {
+    margin: 6px 0 0;
+    color: var(--secondary);
+    font-size: 0.875em;
+    font-weight: normal;
+    line-height: 1.6;
+}
+
+.searchResults mark {
+    color: var(--primary);
+    border-radius: 2px;
+}

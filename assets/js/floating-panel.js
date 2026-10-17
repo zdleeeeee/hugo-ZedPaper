@@ -2,13 +2,14 @@
     const desktop = window.matchMedia('(min-width: 1001px)');
 
     document.querySelectorAll('.floating-panel[data-panel-id]').forEach((panel) => {
+        const modalOnly = panel.hasAttribute('data-modal-only');
         const trigger = panel.querySelector('.floating-panel-trigger');
         const sidebar = panel.querySelector('.floating-panel-sidebar');
         const content = panel.querySelector('.floating-panel-content');
         const dialog = panel.querySelector('.floating-panel-dialog');
         const dialogBody = dialog?.querySelector('.floating-panel-dialog-body');
         const closeButton = dialog?.querySelector('.floating-panel-close');
-        if (!trigger || !sidebar || !content || !dialog || !dialogBody || !closeButton ||
+        if (!trigger || (!sidebar && !modalOnly) || !content || !dialog || !dialogBody || !closeButton ||
             (!content.firstElementChild && !content.textContent.trim())) return;
 
         let restoreTriggerFocus = true;
@@ -35,6 +36,10 @@
         }
 
         function syncLayout() {
+            if (modalOnly) {
+                if (content.parentElement !== dialogBody) dialogBody.append(content);
+                return;
+            }
             restoreTriggerFocus = false;
             if (dialog.open) {
                 afterClose = undefined;
@@ -44,7 +49,7 @@
         }
 
         trigger.addEventListener('click', () => {
-            if (desktop.matches) return;
+            if (desktop.matches && !modalOnly) return;
             restoreTriggerFocus = true;
             trigger.focus({ preventScroll: true });
             dialog.showModal();
@@ -68,7 +73,7 @@
             if (!document.querySelector('.floating-panel-dialog[open]')) {
                 document.documentElement.classList.remove('floating-panel-modal-open');
             }
-            if (restoreTriggerFocus && !desktop.matches) trigger.focus({ preventScroll: true });
+            if (restoreTriggerFocus && (modalOnly || !desktop.matches)) trigger.focus({ preventScroll: true });
         });
         dialog.addEventListener('click', (event) => {
             if (event.target !== dialog) return;

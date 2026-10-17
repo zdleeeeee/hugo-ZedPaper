@@ -1,6 +1,8 @@
+{{- with .Get "source" }}
 <blockquote class="quote-block">
-  <div class="quote-body">{{ .Inner | markdownify }}</div>
-  {{- with .Get "source" }}
+  <div class="quote-body">{{ $.Page.RenderString (dict "display" "block") $.Inner }}</div>
   <footer class="quote-source">{{ . | markdownify }}</footer>
-  {{- end }}
 </blockquote>
+{{- else }}
+<blockquote>{{ $.Page.RenderString (dict "display" "block") $.Inner }}</blockquote>
+{{- end }}

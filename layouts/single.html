@@ -28,8 +28,6 @@
       {{- partial "translation_list.html" . -}}
       {{- partial "edit_post.html" . -}}
       {{- partial "post_canonical.html" . -}}
-
-      {{- partial "post_tags.html" ($.GetTerms (.Language.Params.Taxonomies.tag | default "tags")) }}
     </div>
     {{- end }}
   </header>

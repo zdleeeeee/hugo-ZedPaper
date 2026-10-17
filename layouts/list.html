@@ -98,7 +98,6 @@
   {{- if not (.Param "hideMeta") }}
   <footer class="entry-footer">
     {{- partial "post_meta.html" . -}}
-    {{- partial "post_tags.html" (.GetTerms "tags") }}
   </footer>
   {{- end }}
   <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
@@ -110,18 +109,44 @@
   <nav class="pagination">
     {{- if $paginator.HasPrev }}
     <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">
-      «&nbsp;{{ i18n "prev_page" }}&nbsp;
+      <svg class="paginav-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+      <span class="paginav-label">
+      &nbsp;{{ i18n "prev_page" }}&nbsp;
       {{- if (.Param "ShowPageNums") }}
       {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
       {{- end }}
+      </span>
     </a>
     {{- end }}
+    {{- $pageLinks := slice }}
+    {{- range $paginator.Pagers }}
+      {{- $current := eq .PageNumber $paginator.PageNumber }}
+      {{- $pageLinks = $pageLinks | append (printf `<a href="%s"%s>%d</a>` (.URL | absURL) (cond $current ` aria-current="page"` "") .PageNumber) }}
+    {{- end }}
+    {{- partial "floating_panel.html" (dict
+      "ID" "pagination"
+      "Title" (i18n "select_page" | default "Select page")
+      "Label" (i18n "select_page" | default "Select page")
+      "TriggerIcon" (printf "%d / %d" $paginator.PageNumber $paginator.TotalPages)
+      "Content" ((printf `<nav class="pagination-pages">%s</nav>` (delimit $pageLinks "")) | safeHTML)
+      "Class" "pagination-panel"
+      "ModalOnly" true
+    ) }}
     {{- if $paginator.HasNext }}
     <a class="next" href="{{ $paginator.Next.URL | absURL }}">
-      {{- i18n "next_page" }}&nbsp;
+      <span class="paginav-label">
+      &nbsp;{{- i18n "next_page" }}&nbsp;
       {{- if (.Param "ShowPageNums") }}
       {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}
-      {{- end }}&nbsp;»
+      {{- end }}
+      </span>
+      <svg class="paginav-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m9 18 6-6-6-6" />
+      </svg>
     </a>
     {{- end }}
   </nav>

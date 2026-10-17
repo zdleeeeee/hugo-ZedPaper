@@ -3,17 +3,21 @@
 {{- $triggerID := printf "%s-trigger" $id -}}
 {{- $dialogID := printf "%s-dialog" $id -}}
 {{- $dialogTitleID := printf "%s-dialog-title" $id -}}
-<div class="floating-panel {{ .Class }}" data-panel-id="{{ $id }}">
+<div class="floating-panel {{ .Class }}" data-panel-id="{{ $id }}"{{ if .ModalOnly }} data-modal-only{{ end }}>
     <button id="{{ $triggerID }}" class="floating-panel-trigger" type="button" hidden
         aria-haspopup="dialog" aria-expanded="false" aria-controls="{{ $dialogID }}" aria-label="{{ .Label }}">
         {{- .TriggerIcon | safeHTML -}}
     </button>
+    {{- if .ModalOnly }}
+    <div hidden><div class="floating-panel-content">{{ .Content }}</div></div>
+    {{- else }}
     <aside id="{{ $sidebarID }}" class="floating-panel-sidebar" aria-label="{{ .Label }}">
         <div class="floating-panel-title">{{ if .TitleHref }}<a href="{{ .TitleHref }}">{{ .Title }}</a>{{ else }}{{ .Title }}{{ end }}</div>
         <div class="floating-panel-content">
             {{- .Content -}}
         </div>
     </aside>
+    {{- end }}
     <dialog id="{{ $dialogID }}" class="floating-panel-dialog" aria-labelledby="{{ $dialogTitleID }}">
         <div class="floating-panel-dialog-header">
             <h2 id="{{ $dialogTitleID }}">{{ if .TitleHref }}<a href="{{ .TitleHref }}">{{ .Title }}</a>{{ else }}{{ .Title }}{{ end }}</h2>

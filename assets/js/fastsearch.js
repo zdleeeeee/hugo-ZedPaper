@@ -10,8 +10,10 @@ let firstResult = null;
 let lastResult = null;
 
 const defaultFuseOptions = {
+    includeMatches: true,
     distance: 100,
-    threshold: 0.4,
+    // Match the complete query by default; fuzzy matching can be opted into.
+    threshold: 0,
     ignoreLocation: true,
     keys: ['title', 'permalink', 'summary', 'content']
 };
@@ -24,7 +26,8 @@ const buildFuseOptions = () => {
     return {
         isCaseSensitive: params.fuseOpts.iscasesensitive ?? false,
         includeScore: params.fuseOpts.includescore ?? false,
-        includeMatches: params.fuseOpts.includematches ?? false,
+        // Match positions are required to render contextual previews.
+        includeMatches: true,
         minMatchCharLength: params.fuseOpts.minmatchcharlength ?? 1,
         shouldSort: params.fuseOpts.shouldsort ?? true,
         findAllMatches: params.fuseOpts.findallmatches ?? false,
@@ -65,7 +68,83 @@ const setActiveResult = (element) => {
     currentElement = element;
 };
 
-const renderResults = (results) => {
+const getMatchRanges = (text, query, match) => {
+    const terms = query.trim().split(/\s+/).filter(Boolean)
+        .sort((a, b) => b.length - a.length)
+        .map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const exact = terms.length
+        ? Array.from(text.matchAll(new RegExp(terms.join('|'), params.fuseOpts?.iscasesensitive ? 'g' : 'gi')),
+            hit => [hit.index, hit.index + hit[0].length])
+        : [];
+    // Prefer whole keywords over the scattered character matches of fuzzy search.
+    const ranges = exact.length ? exact : (match?.indices ?? []).map(([start, end]) => [start, end + 1]);
+    const merged = [];
+    for (const [start, end] of ranges.sort((a, b) => a[0] - b[0])) {
+        const previous = merged[merged.length - 1];
+        if (previous && start <= previous[1]) {
+            previous[1] = Math.max(previous[1], end);
+        } else {
+            merged.push([start, end]);
+        }
+    }
+    return merged;
+};
+
+const getHighlightedParts = (text, ranges, excerpt = false) => {
+    const windows = [];
+    if (excerpt && ranges.length) {
+        for (const [from, to] of ranges) {
+            const start = Math.max(0, from - 40);
+            const end = Math.min(text.length, to + 40);
+            const previous = windows[windows.length - 1];
+            if (previous && start <= previous[1] && end - previous[0] <= 180) {
+                previous[1] = Math.max(previous[1], end);
+            } else if (!previous || to > previous[1]) {
+                if (windows.length === 5) break;
+                // Avoid repeating context when two bounded excerpts overlap.
+                const left = Math.max(start, previous?.[1] ?? 0);
+                windows.push([left, Math.min(end, left + 180)]);
+            }
+        }
+    } else {
+        windows.push([0, excerpt ? Math.min(text.length, 180) : text.length]);
+    }
+    const parts = [];
+    const add = (value, highlight = false) => {
+        if (value) parts.push({ text: value, highlight });
+    };
+    let previousEnd = 0;
+    for (const [start, end] of windows) {
+        if (start > previousEnd) add('…');
+        let cursor = start;
+        for (const [from, to] of ranges) {
+            if (to <= start || from >= end) continue;
+            const left = Math.max(start, from);
+            const right = Math.min(end, to);
+            add(text.slice(cursor, left));
+            add(text.slice(left, right), true);
+            cursor = right;
+        }
+        add(text.slice(cursor, end));
+        previousEnd = end;
+    }
+    if (previousEnd < text.length) add('…');
+    return parts;
+};
+
+const appendHighlightedText = (element, parts) => {
+    for (const part of parts) {
+        if (part.highlight) {
+            const mark = document.createElement('mark');
+            mark.textContent = part.text;
+            element.appendChild(mark);
+        } else {
+            element.appendChild(document.createTextNode(part.text));
+        }
+    }
+};
+
+const renderResults = (results, query = '') => {
     if (!Array.isArray(results) || results.length === 0) {
         resList.innerHTML = '';
         firstResult = lastResult = currentElement = null;
@@ -76,7 +155,25 @@ const renderResults = (results) => {
 
     for (const result of results) {
         const li = document.createElement('li');
-        const titleText = document.createTextNode(result.item.title);
+        const matches = result.matches ?? [];
+        const title = document.createElement('div');
+        title.className = 'search-result-title';
+        appendHighlightedText(title, getHighlightedParts(result.item.title,
+            getMatchRanges(result.item.title, query, matches.find(match => match.key === 'title'))));
+
+        const text = document.createElement('div');
+        text.className = 'search-result-text';
+        text.appendChild(title);
+        const contentMatch = matches.find(match => match.key === 'content');
+        const summaryMatch = matches.find(match => match.key === 'summary');
+        const body = contentMatch ? result.item.content : summaryMatch ? result.item.summary : result.item.content || result.item.summary || '';
+        if (body) {
+            const preview = document.createElement('p');
+            preview.className = 'search-result-preview';
+            appendHighlightedText(preview, getHighlightedParts(body,
+                getMatchRanges(body, query, contentMatch || summaryMatch), true));
+            text.appendChild(preview);
+        }
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('width', '24');
         svg.setAttribute('height', '24');
@@ -95,7 +192,7 @@ const renderResults = (results) => {
         link.href = result.item.permalink;
         link.setAttribute('aria-label', result.item.title);
 
-        li.appendChild(titleText);
+        li.appendChild(text);
         li.appendChild(svg);
         li.appendChild(link);
         fragment.appendChild(li);
@@ -120,7 +217,7 @@ const performSearch = () => {
 
     const searchOptions = params.fuseOpts?.limit ? { limit: params.fuseOpts.limit } : undefined;
     const results = searchOptions ? fuse.search(query, searchOptions) : fuse.search(query);
-    renderResults(results);
+    renderResults(results, query);
 };
 
 const initSearch = async () => {
