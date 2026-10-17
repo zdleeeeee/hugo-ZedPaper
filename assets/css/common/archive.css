@@ -5,10 +5,15 @@
 
 .archive-year {
     margin-top: 40px;
+    padding-bottom: var(--half-radius);
 }
 
 .archive-year:not(:last-of-type) {
     border-bottom: 2px solid var(--border);
+}
+
+.archive-year-header {
+    margin-bottom: var(--content-gap);
 }
 
 .archive-month {
@@ -28,12 +33,12 @@
 
 .archive-entry {
     position: relative;
-    padding: 5px;
-    margin: 10px 0;
+    padding: var(--half-radius) var(--radius);
+    margin: 0;
 }
 
 .archive-entry-title {
-    margin: 5px 0;
+    margin: var(--half-radius) 0;
     font-weight: 400;
 }
 

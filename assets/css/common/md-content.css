@@ -200,9 +200,13 @@
 }
 
 .md-content img {
-    width: 100%;
     border-radius: var(--radius);
     margin: 1rem 0;
+}
+
+/* Preserve explicit dimensions from figure and inline-image shortcodes. */
+.md-content img:not([width]):not([height]) {
+    width: 100%;
 }
 
 .md-content img[src*="#center"] {

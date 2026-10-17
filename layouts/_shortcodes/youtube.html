@@ -1,0 +1,22 @@
+{{- $privacy := .Page.Site.Config.Privacy.YouTube -}}
+{{- if not $privacy.Disable -}}
+    {{- $id := "" -}}
+    {{- $autoplay := false -}}
+    {{- $title := "YouTube video" -}}
+    {{- if .IsNamedParams -}}
+        {{- $id = .Get "id" | default "" -}}
+        {{- $autoplay = eq (printf "%v" (.Get "autoplay")) "true" -}}
+        {{- $title = .Get "title" | default $title -}}
+    {{- else -}}
+        {{- $id = .Get 0 | default "" -}}
+    {{- end -}}
+    {{- if not (findRE `^[A-Za-z0-9_-]{11}$` $id) -}}
+        {{- errorf "youtube shortcode requires an 11-character video ID: %s" .Position -}}
+    {{- else -}}
+        {{- $host := cond $privacy.PrivacyEnhanced "www.youtube-nocookie.com" "www.youtube.com" -}}
+<div class="video-embed">
+    <iframe src="https://{{ $host }}/embed/{{ $id }}{{ if $autoplay }}?autoplay=1{{ end }}" loading="lazy" title="{{ $title }}"
+        allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+</div>
+    {{- end -}}
+{{- end -}}

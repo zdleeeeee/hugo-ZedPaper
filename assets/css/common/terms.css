@@ -1,19 +1,41 @@
+/* Shared taxonomy tags for the tags index and the floating tags panel. */
 .terms-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 1em;
-    margin-top: var(--content-gap);
+    gap: 10px;
+    padding: 12px 10px;
 }
 
 .terms-tags li {
     display: inline-block;
-    font-weight: 500;
+    list-style: none;
 }
 
 .terms-tags a {
-    display: block;
-    padding: 4px 10px;
-    background: var(--tertiary);
-    border-radius: var(--radius);
-    transition: transform 0.1s;
+    display: inline-block;
+    font-size: 18px;
+    line-height: 1.6;
+    padding: 0 0.4em;
+    color: var(--content);
+    background: var(--theme-tp);
+    border: solid 1px var(--border);
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.terms-tags a sup {
+    color: var(--secondary);
+}
+
+.terms-tags a:hover {
+    color: var(--primary);
+    border-color: var(--tertiary);
+    box-shadow: var(--shadow);
+    letter-spacing: 1px;
+    transform: scale(1.05);
+}
+
+.terms-tags a:active {
+    transform: scale(0.95);
 }

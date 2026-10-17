@@ -135,6 +135,7 @@ details li ul {
     margin-bottom: 10px;
 }
 
+/* Metadata tags. Taxonomy lists and the tags panel use common/terms.css. */
 .post-tag-item {
     display: inline-block;
     white-space: nowrap;

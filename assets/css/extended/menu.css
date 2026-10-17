@@ -44,12 +44,11 @@ clicking it opens a dropdown panel below the header with the full menu.
         top: 0;
         bottom: 0;
         border: none;
-        background: none;
         color: var(--primary);
         cursor: pointer;
 
         border-radius: 10px;
-        background: #ffffff00;
+        background: var(--header-bg);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         transition: all 0.2s ease;
@@ -67,7 +66,7 @@ clicking it opens a dropdown panel below the header with the full menu.
         align-items: stretch;
         row-gap: var(--radius);
         padding: var(--gap);
-        background: var(--theme-tp);
+        background: var(--header-bg);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--border);

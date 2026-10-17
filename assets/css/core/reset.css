@@ -11,7 +11,10 @@ html {
     text-size-adjust: 100%;
 }
 
-a,
+a {
+    color: inherit;
+}
+
 button,
 body,
 h1,

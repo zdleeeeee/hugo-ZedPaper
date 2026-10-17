@@ -43,16 +43,8 @@
     </a>
     <sup class="archive-count">&nbsp;{{ len .Pages }}</sup>
   </h2>
-  {{- range .Pages.GroupByDate "January" }}
-  <div class="archive-month">
-    <h3 class="archive-month-header" id="{{ $year }}-{{ .Key }}">
-      <a class="archive-header-link" href="#{{ $year }}-{{ .Key }}">
-        {{- .Key -}}
-      </a>
-      <sup class="archive-count">&nbsp;{{ len .Pages }}</sup>
-    </h3>
     <div class="archive-posts">
-      {{- range .Pages }}
+      {{- range .Pages.ByPublishDate.Reverse }}
       {{- if eq .Kind "page" }}
       <div class="archive-entry">
         <h3 class="archive-entry-title entry-hint-parent">
@@ -74,8 +66,6 @@
       {{- end }}
       {{- end }}
     </div>
-  </div>
-  {{- end }}
 </div>
 {{- end }}
 {{- end }}

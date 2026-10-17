@@ -1,0 +1,28 @@
+{{- $id := "" -}}
+{{- $page := 1 -}}
+{{- $title := "Bilibili video" -}}
+{{- if .IsNamedParams -}}
+    {{- $id = .Get "id" | default "" -}}
+    {{- if isset .Params "page" }}{{ $page = .Get "page" }}{{ end -}}
+    {{- $title = .Get "title" | default $title -}}
+{{- else -}}
+    {{- $id = .Get 0 | default "" -}}
+    {{- if ge (len .Params) 2 }}{{ $page = .Get 1 }}{{ end -}}
+{{- end -}}
+{{- if not (findRE `(?i)^(av[0-9]+|bv[0-9a-z]+)$` $id) -}}
+    {{- errorf "bilibili shortcode requires an AV or BV video ID: %s" .Position -}}
+{{- else if not (findRE `^[1-9][0-9]*$` (printf "%v" $page)) -}}
+    {{- errorf "bilibili shortcode page must be a positive integer: %s" .Position -}}
+{{- else -}}
+    {{- $key := "bvid" -}}
+    {{- $value := $id -}}
+    {{- if strings.HasPrefix (lower $id) "av" -}}
+        {{- $key = "aid" -}}
+        {{- $value = strings.TrimPrefix "av" (lower $id) -}}
+    {{- end -}}
+    {{- $query := querify $key $value "page" $page "high_quality" 1 "as_wide" 1 "autoplay" 0 -}}
+<div class="video-embed">
+    <iframe src="https://player.bilibili.com/player.html?{{ $query | safeURL }}" loading="lazy" title="{{ $title }}"
+        allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+</div>
+{{- end -}}

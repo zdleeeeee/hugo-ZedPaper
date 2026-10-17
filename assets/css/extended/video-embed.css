@@ -1,0 +1,14 @@
+.md-content .video-embed {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-block: var(--content-gap);
+    overflow: hidden;
+    border-radius: var(--radius);
+}
+
+.md-content .video-embed > iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}

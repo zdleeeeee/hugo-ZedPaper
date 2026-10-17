@@ -11,6 +11,9 @@
 </header>
 {{- end }}
 
+{{- if eq .Type "tags" }}
+{{- partial "tags_content.html" . }}
+{{- else }}
 <ul class="terms-tags">
     {{- $type := .Type }}
         {{- range $key, $value := .Data.Terms.Alphabetical }}
@@ -18,10 +21,11 @@
             {{- $count := .Count }}
             {{- with site.GetPage (printf "/%s/%s" $type $name) }}
             <li>
-                <a href="{{ .Permalink }}">{{ .LinkTitle }} <sup><strong><sup>{{ $count }}</sup></strong></sup> </a>
+                <a href="{{ .Permalink }}">{{ .LinkTitle }} <sup>{{ $count }}</sup></a>
             </li>
         {{- end }}
     {{- end }}
 </ul>
+{{- end }}
 
 {{- end }}{{/* end main */ -}}
