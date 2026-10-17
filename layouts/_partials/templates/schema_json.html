@@ -92,22 +92,16 @@
   {{- end -}}
   "datePublished": {{ .PublishDate }},
   "dateModified": {{ .Lastmod }},
-  {{- with (.Params.author | default site.Params.author) }}
-  "author":
-    {{- if (or (eq (printf "%T" .) "[]string") (eq (printf "%T" .) "[]interface {}")) -}}
-  [{{- range $i, $v := . -}}
-  {{- if $i }}, {{end -}}
-  {
-    "@type": "Person",
-    "name": {{ $v }}
-  }
-  {{- end }}],
-    {{- else -}}
-  {
-    "@type": "Person",
-    "name": {{ . }}
-  },
+  {{- $people := slice -}}
+  {{- range partial "author_data.html" (.Params.author | default site.Params.author) -}}
+    {{- $person := dict "@type" "Person" "name" .name -}}
+    {{- with .url -}}
+      {{- $person = merge $person (dict "url" (. | absURL)) -}}
     {{- end -}}
+    {{- $people = $people | append $person -}}
+  {{- end -}}
+  {{- with $people }}
+  "author": {{ . }},
   {{- end }}
   "mainEntityOfPage": {
     "@type": "WebPage",

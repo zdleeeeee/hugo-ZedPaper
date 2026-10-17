@@ -56,3 +56,8 @@
 .chat-message-body > :last-child {
     margin-bottom: 0;
 }
+
+.chat-message-body img {
+    width: auto;
+    max-height: 15rem;
+}

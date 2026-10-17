@@ -1,20 +1,9 @@
 {{- $authorEmail := "" }}
-{{- with site.Params.author }}
-  {{- if reflect.IsMap . }}
-    {{- with .email }}
-      {{- $authorEmail = . }}
-    {{- end }}
-  {{- end }}
-{{- end }}
-
 {{- $authorName := "" }}
-{{- with site.Params.author }}
-  {{- if reflect.IsMap . }}
-    {{- with .name }}
-      {{- $authorName = . }}
-    {{- end }}
-  {{- else }}
-    {{- $authorName  = . }}
+{{- range partial "author_data.html" site.Params.author }}
+  {{- if and .email (not $authorEmail) }}
+    {{- $authorEmail = .email }}
+    {{- $authorName = .name }}
   {{- end }}
 {{- end }}
 

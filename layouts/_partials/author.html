@@ -1,10 +1,8 @@
-{{- if or .Params.author site.Params.author }}
-    {{- $author := (.Params.author | default site.Params.author) }}
-    {{- $author_type := (printf "%T" $author) }}
-
-    {{- if (or (eq $author_type "[]string") (eq $author_type "[]interface {}")) }}
-        {{- (delimit $author ", " ) }}
+{{- range $index, $author := partial "author_data.html" (.Params.author | default site.Params.author) -}}
+    {{- if $index }}, {{ end -}}
+    {{- if $author.url -}}
+        <a href="{{ $author.url | relURL }}">{{ $author.name }}</a>
     {{- else }}
-        {{- $author }}
-    {{- end }}
+        {{- $author.name -}}
+    {{- end -}}
 {{- end -}}
