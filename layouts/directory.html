@@ -39,8 +39,10 @@
 {{- end }}
 
 <div class="directory-grid">
-  {{- range union .RegularPages .Sections }}
-  <section class="post-entry directory-block">
+  {{- $entries := union .RegularPages .Sections }}
+  {{- $entries = union (where $entries "Params.pinned" true) (where $entries "Params.pinned" "ne" true) }}
+  {{- range $entries }}
+  <section class="post-entry directory-block{{ if .Params.directoryWide }} directory-block-wide{{ end }}">
     {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
     {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
     <h2 class="directory-heading">

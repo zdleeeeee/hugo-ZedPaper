@@ -13,6 +13,10 @@
     overflow-wrap: anywhere;
 }
 
+.directory-grid .directory-block-wide {
+    grid-column: 1 / -1;
+}
+
 .directory-grid .directory-heading {
     margin: 0;
     font-size: 24px;
