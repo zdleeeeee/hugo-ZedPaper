@@ -1,0 +1,128 @@
+.directory-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: var(--content-gap);
+    margin-bottom: var(--gap);
+}
+
+.directory-grid .directory-block {
+    min-width: 0;
+    margin-bottom: 0;
+    height: 100%;
+    overflow-wrap: anywhere;
+}
+
+.directory-grid .directory-heading {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.4;
+}
+
+.directory-grid .directory-section-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+/* Stretch the section link over the card; article links sit above it. */
+.directory-grid .directory-section-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+}
+
+.directory-grid .directory-section-link:focus-visible {
+    outline: none;
+}
+
+.directory-grid .directory-section-link:focus-visible::after {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+.directory-grid .directory-arrow {
+    flex-shrink: 0;
+    opacity: 0;
+    transform: translateX(4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.directory-grid .directory-posts {
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.directory-grid .directory-posts li + li {
+    margin-top: 0px;
+}
+
+.directory-grid .directory-posts a {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+    padding: 4px 0;
+    border-radius: var(--half-radius);
+    color: var(--secondary);
+    line-height: 1.6;
+    transition: color 0.2s ease;
+}
+
+.directory-grid .directory-post-label {
+    transition: transform 0.2s ease;
+}
+
+.directory-grid a:hover,
+.directory-grid a:focus-visible {
+    color: var(--primary);
+}
+
+.directory-grid a:is(:hover, :focus-visible) .directory-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.directory-grid .directory-posts a:is(:hover, :focus-visible) .directory-post-label {
+    transform: translateX(4px);
+}
+
+.directory-grid .directory-posts a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+@media (hover: none) {
+    .directory-grid .directory-arrow {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .directory-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .directory-grid .directory-block,
+    .directory-grid .directory-arrow,
+    .directory-grid .directory-posts a,
+    .directory-grid .directory-post-label {
+        transition: none;
+    }
+
+    .directory-grid .directory-block:hover,
+    .directory-grid .directory-block:focus-within,
+    .directory-grid .directory-arrow,
+    .directory-grid a:is(:hover, :focus-visible) .directory-arrow,
+    .directory-grid .directory-posts a:is(:hover, :focus-visible) .directory-post-label {
+        transform: none;
+    }
+}
