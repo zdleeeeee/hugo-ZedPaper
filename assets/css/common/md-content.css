@@ -217,6 +217,16 @@
     text-align: center;
 }
 
+/* Linked figures must constrain the image's containing block as well. */
+.md-content figure > a {
+    max-width: 100%;
+}
+
+.md-content figure img[width] {
+    max-width: 100%;
+    height: auto;
+}
+
 .md-content figure>figcaption {
     color: var(--primary);
     font-size: 16px;

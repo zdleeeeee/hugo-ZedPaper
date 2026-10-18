@@ -60,6 +60,8 @@ Messages inside a collapsed section still support **Markdown**.
 
 Use `figure` to display an image with an optional title, caption, credit, and link. Set `src` to the image URL and `alt` to its text alternative. `width` and `height` set the image dimensions; `align="center"` centers the figure, and `class` adds a custom CSS class.
 
+When `width` is set, the image keeps that width while space permits and scales down proportionally in narrower content containers. This also works when `link` wraps the image in a clickable link. Images with a specified width use automatic height to preserve their proportions; height-only sizing remains supported.
+
 ```text
 {{</* figure src="profile.jpg" alt="Zed's profile picture" width="160" align="center" title="Profile picture" caption="A **figure** with a caption. " attr="Zed Lee" attrlink="https://zdleeeeee.github.io/" link="profile.jpg" target="_blank" rel="noopener noreferrer" */>}}
 ```
@@ -69,6 +71,14 @@ Use `figure` to display an image with an optional title, caption, credit, and li
 `title` is a visible title below the image, rather than a hover tooltip. `caption` is the image description. `attr` is short for attribution: it credits the image's author or source, and `attrlink` makes that credit a link. Both `caption` and `attr` support Markdown; add a trailing space to `caption` if you want a space before the credit. If `alt` is omitted, the template uses the caption's plain text as the text alternative.
 
 `link` makes the image clickable. Its optional `target` and `rel` parameters control the image link only; they do not apply to `attrlink`.
+
+For a credit linking to another content page, use `attrref` instead of embedding a `relref` shortcode inside an argument:
+
+```text
+{{</* figure src="image.jpg" title="Illustration" attr="Zed Lee" attrref="/about/team/#zed-lee" */>}}
+```
+
+`attrref` resolves the content reference using Hugo's `Page.RelRef`, including page URL overrides, heading fragments, and a deployment subdirectory such as `/blog/`. The referenced content page must exist; a missing reference produces Hugo's normal reference error. `attrref` takes precedence when both `attrref` and `attrlink` are supplied. Existing `attrlink` values remain literal URLs, suitable for external credits. Do not put `{{</* relref ... */>}}` inside a quoted shortcode argument.
 
 | Parameter          | Meaning                                                      |
 | ------------------ | ------------------------------------------------------------ |
