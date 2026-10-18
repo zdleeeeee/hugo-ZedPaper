@@ -33,6 +33,8 @@
 
 .archive-entry {
     position: relative;
+    /* Keep metadata links above the entry overlay, but below the header. */
+    isolation: isolate;
     padding: var(--half-radius) var(--radius);
     margin: 0;
 }
