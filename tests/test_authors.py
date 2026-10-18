@@ -14,11 +14,13 @@ ROOT = THEME.parents[1]
 CASES = {
     'legacy': ("author = 'Legacy Author'", ['Legacy Author'], []),
     'names': ("author = ['Alice', 'Bob']", ['Alice', 'Bob'], []),
-    'linked': ('author = [{name="Zed Lee", url="/"}, {name="Alice", url="https://alice.example/"}, {name="Bob"}]', ['Zed Lee', 'Alice', 'Bob'], ['/', 'https://alice.example/']),
-    'mixed': ('author = ["Plain", {name="Linked", url="/about/"}]', ['Plain', 'Linked'], ['/about/']),
+    'linked': ('author = [{name="Zed Lee", url="/"}, {name="Alice", url="https://alice.example/"}, {name="Bob"}]', ['Zed Lee', 'Alice', 'Bob'], ['/blog/', 'https://alice.example/']),
+    'mixed': ('author = ["Plain", {name="Linked", url="/about/"}]', ['Plain', 'Linked'], ['/blog/about/']),
     'relative': ('author = [{name="Relative", url="about/"}]', ['Relative'], ['/blog/about/']),
+    'anchored': ('author = [{name="Root", url="/about/team/#zed-lee"}, {name="Relative", url="about/team/#zed-lee"}]', ['Root', 'Relative'], ['/blog/about/team/#zed-lee', '/blog/about/team/#zed-lee']),
+    'prefixed': ('author = [{name="Prefixed", url="/blog/about/team/#zed-lee"}]', ['Prefixed'], ['/blog/about/team/#zed-lee']),
     'map': ('author = {name="Solo", url="https://solo.example/"}', ['Solo'], ['https://solo.example/']),
-    'fallback': ('', ['Default', 'Coauthor'], ['/']),
+    'fallback': ('', ['Default', 'Coauthor'], ['/blog/']),
     'escaped': ("author = 'A <B> & Co'", ['A <B> & Co'], []),
     'empty': ('author = [{url="/"}, {name=""}]', [], []),
     'hidden': ('author = [{name="Hidden", url="/"}]\nhideAuthor = true', ['Hidden'], []),
@@ -60,7 +62,7 @@ with fixture_directory() as folder:
         if isinstance(people, dict): people = [people]
         assert [person['name'] for person in people] == names, (slug, people)
         expected_schema_urls = ['https://example.org' + url if url.startswith('/') else url for url in urls]
-        if slug == 'hidden': expected_schema_urls = ['https://example.org/']
+        if slug == 'hidden': expected_schema_urls = ['https://example.org/blog/']
         assert [person['url'] for person in people if 'url' in person] == expected_schema_urls, (slug, people)
     feed = ET.parse(site / 'public/index.xml')
     assert feed.findtext('./channel/managingEditor') == 'default@example.org (Default)'

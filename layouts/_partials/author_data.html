@@ -16,6 +16,13 @@
         {{- else -}}
             {{- $name = . -}}
         {{- end -}}
+        {{- /* Author paths belong to this site, including when hosted in a subdirectory. */ -}}
+        {{- if and (strings.HasPrefix $url "/") (not (strings.HasPrefix $url "//")) -}}
+            {{- $basePath := (urls.Parse site.BaseURL).Path | default "/" -}}
+            {{- if not (strings.HasPrefix $url $basePath) -}}
+                {{- $url = strings.TrimPrefix "/" $url | relURL -}}
+            {{- end -}}
+        {{- end -}}
         {{- with strings.TrimSpace $name -}}
             {{- $authors = $authors | append (dict "name" . "url" $url "email" $email) -}}
         {{- end -}}
