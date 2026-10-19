@@ -42,18 +42,24 @@
   {{- $entries := union .RegularPages .Sections }}
   {{- $entries = union (where $entries "Params.pinned" true) (where $entries "Params.pinned" "ne" true) }}
   {{- range $entries }}
+  {{- $posts := .RegularPages }}
   <section class="post-entry directory-block{{ if .Params.directoryWide }} directory-block-wide{{ end }}">
     {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
     {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
     <h2 class="directory-heading">
       <a class="directory-section-link" href="{{ .RelPermalink }}">
-        <span>{{ .Title }}</span>
+        <span>{{ .Title }} <span class="directory-count">{{ len $posts }} {{- if gt (len $posts) 1}} articles {{- else }} article {{- end }}</span></span>
+        <span class="directory-heading-actions">
+        {{- if gt (len $posts) 5 }}
+          <span class="directory-more">More</span>
+        {{- end }}
         <svg class="directory-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+        </span>
       </a>
     </h2>
-    {{- with .RegularPages }}
+    {{- with $posts }}
     <ul class="directory-posts">
-      {{- range . }}
+      {{- range first 5 . }}
       <li><a href="{{ .RelPermalink }}">
         <span class="directory-post-label">{{ .Title }}</span>
         <svg class="directory-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
