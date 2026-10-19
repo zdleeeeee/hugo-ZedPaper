@@ -19,7 +19,15 @@
         {{- $processableFormats = $processableFormats | append "webp" -}}
     {{- end -}}
 
-    {{- $imgdl := (.Params.cover.image) | absURL }}
+    {{- $imageURL := .Params.cover.image }}
+    {{- /* CMS site-local paths must include the deployment base path. */ -}}
+    {{- if and (strings.HasPrefix $imageURL "/") (not (strings.HasPrefix $imageURL "//")) }}
+        {{- $basePath := (urls.Parse site.BaseURL).Path | default "/" }}
+        {{- if not (strings.HasPrefix $imageURL $basePath) }}
+            {{- $imageURL = strings.TrimPrefix "/" $imageURL }}
+        {{- end }}
+    {{- end }}
+    {{- $imgdl := $imageURL | absURL }}
     {{- if $cover -}}
         {{- $imgdl = $cover.Permalink }}
     {{- end -}}
