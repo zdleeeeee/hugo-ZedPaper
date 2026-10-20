@@ -103,23 +103,45 @@
             }, 2000);
         }
 
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
+        copybutton.addEventListener('click', async () => {
+            const code = codeblock.cloneNode(true);
+            // Chroma uses classes or inline styles for its line-number spans.
+            code.querySelectorAll('.ln, .lnt, [style]').forEach((element) => {
+                if (element.matches('.ln, .lnt') ||
+                    element.style.getPropertyValue('user-select') === 'none' ||
+                    element.style.getPropertyValue('-webkit-user-select') === 'none') {
+                    element.remove();
+                }
+            });
+            const text = code.textContent;
+
+            if (navigator.clipboard?.writeText) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    copyingDone();
+                    return;
+                } catch (error) {
+                    // Try the legacy path when clipboard permissions are denied.
+                }
             }
 
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
+            const activeElement = document.activeElement;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            textarea.style.top = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
             try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
+                if (document.execCommand('copy')) copyingDone();
+            } catch (error) {
+                // Leave the button unchanged when neither copy method succeeds.
+            } finally {
+                textarea.remove();
+                activeElement?.focus({ preventScroll: true });
+            }
         });
 
         if (container.classList.contains("highlight")) {

@@ -1,0 +1,23 @@
+{{- $href := .Destination -}}
+{{- $u := urls.Parse $href -}}
+{{- if and (not $u.IsAbs) (not $u.Host) (strings.HasPrefix $u.Path "/") -}}
+  {{- $target := site.GetPage $u.Path -}}
+  {{- if not $target -}}
+    {{- /* Accept one legacy deployment prefix only when a content page exists. */ -}}
+    {{- $parts := split (strings.TrimPrefix "/" $u.Path) "/" -}}
+    {{- if gt (len $parts) 1 -}}
+      {{- $target = site.GetPage (printf "/%s" (delimit (after 1 $parts) "/")) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $target -}}
+    {{- $href = .RelPermalink -}}
+    {{- with $u.RawQuery -}}
+      {{- $href = printf "%s?%s" $href . -}}
+    {{- end -}}
+    {{- with $u.EscapedFragment -}}
+      {{- $href = printf "%s#%s" $href . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<a href="{{ $href | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text }}</a>
+{{- /**/ -}}

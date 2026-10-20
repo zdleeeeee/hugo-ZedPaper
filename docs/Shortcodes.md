@@ -239,6 +239,16 @@ A quotation can contain more than one paragraph.
 
 Omit `source` if no attribution is needed. Punctuation such as the dash is written explicitly in `source`, rather than added automatically.
 
+For an internal content reference, use `sourceref`. It resolves the target with Hugo's `Page.RelRef`, including deployment base paths, custom page URLs, and heading fragments:
+
+```text
+{{</* quote source="— Zed Lee, About ZedPaper" sourceref="/posts/20260901about-zedpaper/" */>}}
+Keep the quotation **simple**.
+{{</* /quote */>}}
+```
+
+With `sourceref`, the entire `source` becomes the link text. Use text or Markdown emphasis in `source`, rather than a Markdown link, to avoid nested links. If `source` is omitted, the resolved URL is displayed. Without `sourceref`, existing Markdown links in `source` remain unchanged. A referenced page must exist; missing references produce Hugo's normal reference error. Do not embed a `relref` shortcode inside a quoted parameter.
+
 ```text
 {{</* quote */>}}
 A quotation without a source.

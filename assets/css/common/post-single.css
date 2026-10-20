@@ -96,6 +96,7 @@ details {
     padding: var(--radius)  var(--content-gap);
     border-radius: var(--radius);
     background: var(--code-bg);
+    margin-bottom: var(--content-gap);
 }
 
 details::details-content {

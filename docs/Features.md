@@ -1,5 +1,17 @@
 # Theme features
 
+## Markdown content links
+
+Root-relative Markdown links to existing content pages use that page's current relative permalink, so the deployment base path and page URL overrides are applied automatically:
+
+```markdown
+[Join the project](/about/join/)
+```
+
+A single legacy deployment prefix is also accepted when the original path does not identify a content page but removing its first segment does. For example, `/gog/about/join/` can resolve to the existing `/about/join/` content page when previewing at `/` or moving to a new base path. Prefer paths without deployment prefixes in new content. This compatibility rule can reinterpret a broken path if its suffix happens to identify a page.
+
+Queries, heading fragments, link titles and formatted link text are preserved. External URLs, protocol-relative URLs, email links, same-page anchors, relative file links, and unresolved root-relative destinations are unchanged. This applies to Markdown links, including the `quote` shortcode's `source`; it does not rewrite raw HTML links or arbitrary shortcode URL parameters.
+
 See [Shortcodes](Shortcodes.md) for content components and [Customization](Customization.md) for CSS overrides.
 
 ## Authors and links

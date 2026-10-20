@@ -10,15 +10,22 @@
 }
 
 .chat-message-avatar {
-    flex: 0 0 40px;
+    flex: 0 0 48px;
+    transition: var(--transition);
 }
 
 .chat-message-avatar img {
     display: block;
-    width: calc(var(--gap) + var(--content-gap));
-    height: calc(var(--gap) + var(--content-gap));
+    width: calc(var(--gap) * 2);
+    height: calc(var(--gap) * 2);
     border-radius: 50%;
     object-fit: cover;
+    transition: var(--transition);
+}
+
+.chat-message-avatar img:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow);
 }
 
 .chat-message-content {

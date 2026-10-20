@@ -1,7 +1,12 @@
-{{- with .Get "source" }}
+{{- $source := .Get "source" -}}
+{{- $sourceURL := "" -}}
+{{- with .Get "sourceref" -}}
+  {{- $sourceURL = $.Page.RelRef (dict "path" .) -}}
+{{- end -}}
+{{- if or $source $sourceURL }}
 <blockquote class="quote-block">
   <div class="quote-body">{{ $.Page.RenderString (dict "display" "block") $.Inner }}</div>
-  <footer class="quote-source">{{ . | markdownify }}</footer>
+  <footer class="quote-source">{{ if $sourceURL }}<a href="{{ $sourceURL }}">{{ $.Page.RenderString ($source | default $sourceURL) }}</a>{{ else }}{{ $.Page.RenderString $source }}{{ end }}</footer>
 </blockquote>
 {{- else }}
 <blockquote>{{ $.Page.RenderString (dict "display" "block") $.Inner }}</blockquote>
